@@ -139,6 +139,22 @@ func handlerUser(w http.ResponseWriter, r *http.Request) {
 			}
 			//Регистрация нового пользователя
 			if dat.Command == "reg" {
+				if dat.Params == "" {
+					response := Answer{
+						Type:    "ERR",
+						Message: "Params is empty",
+					}
+					data, err := json.Marshal(response)
+					if err != nil {
+						log.Printf("%s", err)
+						w.WriteHeader(http.StatusInternalServerError)
+						fmt.Fprintf(w, "%s", err)
+						return
+					}
+					w.WriteHeader(http.StatusBadRequest)
+					fmt.Fprintf(w, "%s", data)
+					return
+				}
 				token := generateToken(20)
 				mu.Lock()
 				Users[dat.Params] = token
@@ -155,7 +171,7 @@ func handlerUser(w http.ResponseWriter, r *http.Request) {
 					fmt.Fprintf(w, "%s", err)
 					return
 				}
-				w.WriteHeader(http.StatusOK)
+				w.WriteHeader(http.StatusCreated)
 				fmt.Fprintf(w, "%s", data)
 			}
 		}

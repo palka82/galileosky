@@ -5,3 +5,4 @@ Backend для сервиса, который принимает данные о
 1. Регистрация пользователя
 
 Метод POST. URL http://127.0.0.1:8000/users
+Входные параметры в JSON формате {"command":"reg","params":"email"}, через переменную data. Если все правильно в ответ будет 201 {"type":"OK","message":"ydLxIfdLXfyHAWeLjMOj"}, или же 500 {"type":"OK","message":"текст ошибки"}, или же 400 {"type":"ERR","message":"текст ошибки"} 
